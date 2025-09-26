@@ -1,5 +1,7 @@
 # all-MiniLM-L6-v2-go 
 
+[![Build, Test and Release](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml)
+
 A Go implementation of the [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) sentence transformer model for generating high-quality sentence embeddings.
 
 This library provides a native Go interface to compute sentence embeddings using the all-MiniLM-L6-v2 model, which is optimized for semantic similarity tasks and runs efficiently on CPU.
