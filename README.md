@@ -63,6 +63,9 @@ func main() {
 	// Compute embeddings
 	baseEmbedding, _ := model.Compute(baseSentence)
 	candidateEmbeddings, _ := model.ComputeBatch(candidates)
+
+	// computeCosineSimilarity..
+	// ...
 }
 ```
 
