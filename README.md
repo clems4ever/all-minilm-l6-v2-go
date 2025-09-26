@@ -1,6 +1,6 @@
 # all-MiniLM-L6-v2-go 
 
-[![Build, Test and Release](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml)
+[![Build and Test](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/clems4ever/all-minilm-l6-v2-go/actions/workflows/build-and-release.yml)
 
 A Go implementation of the [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) sentence transformer model for generating high-quality sentence embeddings.
 
