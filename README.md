@@ -12,28 +12,25 @@ This library provides a native Go interface to compute sentence embeddings using
 - **Well Tested**: Comprehensive test suite ensuring reliability
 - **384-dimensional embeddings**: Compatible with the original model output
 
-## Installation
+## Quick Start
+
+### Docker (No Installation Required)
+
+Try it out immediately with Docker:
+
+```bash
+echo "hello" | docker run -i all-minilm-l6-v2-go -o json
+```
+
+### Go Library
+
+Install the library:
 
 ```bash
 go get github.com/clems4ever/all-minilm-l6-v2-go
 ```
 
-### Prerequisites
-
-This library requires ONNX Runtime to be installed on your system:
-
-**Ubuntu/Debian:**
-```bash
-    ORT_VERSION=1.23.0
-    wget https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz
-    tar -xzf onnxruntime-linux-x64-${ORT_VERSION}.tgz
-    sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/include/* /usr/local/include/
-    sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/lib/* /usr/local/lib/
-```
-
-**Other systems:** Please refer to the [ONNX Runtime installation guide](https://onnxruntime.ai/docs/install/).
-
-## Quick Start
+Use it in your code:
 
 ```go
 package main
@@ -68,6 +65,23 @@ func main() {
 	candidateEmbeddings, _ := model.ComputeBatch(candidates)
 }
 ```
+
+## Installation
+
+### Prerequisites
+
+This library requires ONNX Runtime to be installed on your system:
+
+**Ubuntu/Debian:**
+```bash
+ORT_VERSION=1.23.0
+wget https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz
+tar -xzf onnxruntime-linux-x64-${ORT_VERSION}.tgz
+sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/include/* /usr/local/include/
+sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/lib/* /usr/local/lib/
+```
+
+**Other systems:** Please refer to the [ONNX Runtime installation guide](https://onnxruntime.ai/docs/install/).
 
 ## Performance Tips
 
