@@ -1,0 +1,84 @@
+name: Build, Test and Release
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: true
+      -
+        name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      -
+        name: Install ONNX Runtime
+        run: |
+          ORT_VERSION=1.23.0
+          wget https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          tar -xzf onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/include/* /usr/local/include/
+          sudo cp -r onnxruntime-linux-x64-${ORT_VERSION}/lib/* /usr/local/lib/
+      -
+        name: Build
+        run: go build -v ./...
+      -
+        name: Run Tests
+        run: go test -v ./...
+        env:
+          ONNXRUNTIME_LIB_PATH: /usr/local/lib/libonnxruntime.so
+      -
+        name: Run Benchmarks (validation only)
+        run: go test ./all_minilm_l6_v2 -bench=. -run=^$ -benchtime=1s
+        env:
+          ONNXRUNTIME_LIB_PATH: /usr/local/lib/libonnxruntime.so
+
+  goreleaser:
+    runs-on: ubuntu-latest
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: true
+      -
+        name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      -
+        name: Install ONNX Runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libonnxruntime-dev
+          echo "LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+      -
+        name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          # 'latest', 'nightly', or a semver
+          version: '~> v2'
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
