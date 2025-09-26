@@ -21,7 +21,7 @@ This library provides a native Go interface to compute sentence embeddings using
 Try it out immediately with Docker:
 
 ```bash
-echo "hello" | docker run -i all-minilm-l6-v2-go -o json
+echo "hello" | docker run -i ghcr.io/clems4ever/all-minilm-l6-v2-go:main . -o json
 ```
 
 ### Go Library
