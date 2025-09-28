@@ -39,7 +39,8 @@ func NewModel(opts ...ModelOption) (*Model, error) {
 		opt(model)
 	}
 
-	tk, err := pretrained.FromReader(bytes.NewBuffer(embeddedTokenizer))
+	tk, err := pretrained.FromReader(
+		bytes.NewBuffer(embeddedTokenizer))
 	if err != nil {
 		return nil, fmt.Errorf("failed to load tokenizer: %w", err)
 	}
@@ -92,6 +93,14 @@ func (m *Model) Compute(sentence string) ([]float32, error) {
 	return results[0], nil
 }
 
+func (m *Model) ComputeFromEncoding(encoding tokenizer.Encoding) ([]float32, error) {
+	res, err := m.ComputeBatchFromEncodings([]tokenizer.Encoding{encoding})
+	if err != nil {
+		return nil, err
+	}
+	return res[0], nil
+}
+
 func (m *Model) ComputeBatch(sentences []string) ([][]float32, error) {
 	if len(sentences) == 0 {
 		return nil, nil
@@ -101,12 +110,20 @@ func (m *Model) ComputeBatch(sentences []string) ([][]float32, error) {
 	for _, s := range sentences {
 		inputBatch = append(inputBatch, tokenizer.NewSingleEncodeInput(tokenizer.NewRawInputSequence(s)))
 	}
+
+	if len(inputBatch) == 0 {
+		return nil, nil
+	}
 	encodings, err := m.tk.EncodeBatch(inputBatch, true)
 	if err != nil {
 		return nil, fmt.Errorf("failed to tokenize sentence: %w", err)
 	}
+	return m.ComputeBatchFromEncodings(encodings)
+}
 
-	batchSize := len(sentences)
+func (m *Model) ComputeBatchFromEncodings(encodings []tokenizer.Encoding) ([][]float32, error) {
+
+	batchSize := len(encodings)
 	seqLength := len(encodings[0].Ids)
 	hiddenSize := 384
 
