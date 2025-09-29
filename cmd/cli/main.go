@@ -79,7 +79,7 @@ func runEmbedding(cmd *cobra.Command, args []string) {
 
 	// Compute embeddings
 	if batchMode && len(sentences) > 1 {
-		embeddings, err := model.ComputeBatch(sentences)
+		embeddings, err := model.ComputeBatch(sentences, false)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to compute batch embeddings: %v\n", err)
 			os.Exit(1)
@@ -91,7 +91,7 @@ func runEmbedding(cmd *cobra.Command, args []string) {
 	} else {
 		// Process individually
 		for _, sentence := range sentences {
-			embedding, err := model.Compute(sentence)
+			embedding, err := model.Compute(sentence, false)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Failed to compute embedding for '%s': %v\n", sentence, err)
 				os.Exit(1)

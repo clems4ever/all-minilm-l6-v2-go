@@ -15,7 +15,7 @@ func TestSingleSentenceEmbedding(t *testing.T) {
 	defer model.Close()
 
 	sentence := "Hello, world! This is a test sentence."
-	embedding, err := model.Compute(sentence)
+	embedding, err := model.Compute(sentence, false)
 	if err != nil {
 		t.Fatalf("Failed to compute embedding: %v", err)
 	}
@@ -62,7 +62,7 @@ func TestBatchEmbedding(t *testing.T) {
 		"A third sentence with different content.",
 	}
 
-	embeddings, err := model.ComputeBatch(sentences)
+	embeddings, err := model.ComputeBatch(sentences, false)
 	if err != nil {
 		t.Fatalf("Failed to compute batch embeddings: %v", err)
 	}
@@ -126,7 +126,7 @@ func TestConsistentEmbeddingForSameSentence(t *testing.T) {
 		"This is a repeated sentence.", // Same as first
 	}
 
-	embeddings, err := model.ComputeBatch(sentences)
+	embeddings, err := model.ComputeBatch(sentences, false)
 	if err != nil {
 		t.Fatalf("Failed to compute batch embeddings: %v", err)
 	}
@@ -177,13 +177,13 @@ func TestSingleVsBatchConsistency(t *testing.T) {
 	sentence := "Testing consistency between single and batch computation."
 
 	// Compute single embedding
-	singleEmbedding, err := model.Compute(sentence)
+	singleEmbedding, err := model.Compute(sentence, false)
 	if err != nil {
 		t.Fatalf("Failed to compute single embedding: %v", err)
 	}
 
 	// Compute batch embedding with just one sentence
-	batchEmbeddings, err := model.ComputeBatch([]string{sentence})
+	batchEmbeddings, err := model.ComputeBatch([]string{sentence}, false)
 	if err != nil {
 		t.Fatalf("Failed to compute batch embedding: %v", err)
 	}
@@ -206,7 +206,7 @@ func TestEmptyBatch(t *testing.T) {
 	defer model.Close()
 
 	// Test empty batch
-	embeddings, err := model.ComputeBatch([]string{})
+	embeddings, err := model.ComputeBatch([]string{}, false)
 	if err != nil {
 		t.Fatalf("Failed to compute empty batch: %v", err)
 	}

@@ -22,10 +22,10 @@ func NewTokenizer() (*Tokenizer, error) {
 	}, nil
 }
 
-func (tk *Tokenizer) Encode(s string) (*tokenizer.Encoding, error) {
-	return tk.tk.EncodeSingle(s)
+func (tk *Tokenizer) Encode(s string, addSpecialTokens bool) (*tokenizer.Encoding, error) {
+	return tk.tk.EncodeSingle(s, addSpecialTokens)
 }
 
-func (tk *Tokenizer) Decode(ids []int) string {
-	return tk.tk.Decode(ids, false)
+func (tk *Tokenizer) Decode(ids []int, skipSpecialTokens bool) string {
+	return tk.tk.Decode(ids, skipSpecialTokens)
 }

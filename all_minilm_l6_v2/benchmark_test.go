@@ -26,7 +26,7 @@ func BenchmarkSingleSentence(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.Compute(sentence)
+		_, err := benchModel.Compute(sentence, false)
 		if err != nil {
 			b.Fatalf("Failed to compute embedding: %v", err)
 		}
@@ -41,7 +41,7 @@ func BenchmarkSingleSentenceShort(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.Compute(sentence)
+		_, err := benchModel.Compute(sentence, false)
 		if err != nil {
 			b.Fatalf("Failed to compute embedding: %v", err)
 		}
@@ -56,7 +56,7 @@ func BenchmarkSingleSentenceLong(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.Compute(sentence)
+		_, err := benchModel.Compute(sentence, false)
 		if err != nil {
 			b.Fatalf("Failed to compute embedding: %v", err)
 		}
@@ -74,7 +74,7 @@ func BenchmarkBatch2(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}
@@ -94,7 +94,7 @@ func BenchmarkBatch4(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}
@@ -118,7 +118,7 @@ func BenchmarkBatch8(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}
@@ -136,7 +136,7 @@ func BenchmarkBatch16(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}
@@ -154,7 +154,7 @@ func BenchmarkBatch32(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}
@@ -175,7 +175,7 @@ func BenchmarkVsSingle4Individual(b *testing.B) {
 
 	for b.Loop() {
 		for _, sentence := range sentences {
-			_, err := benchModel.Compute(sentence)
+			_, err := benchModel.Compute(sentence, false)
 			if err != nil {
 				b.Fatalf("Failed to compute embedding: %v", err)
 			}
@@ -219,7 +219,7 @@ func BenchmarkVariableLengthBatch(b *testing.B) {
 	b.ReportAllocs()
 
 	for b.Loop() {
-		_, err := benchModel.ComputeBatch(sentences)
+		_, err := benchModel.ComputeBatch(sentences, false)
 		if err != nil {
 			b.Fatalf("Failed to compute batch embeddings: %v", err)
 		}

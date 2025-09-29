@@ -82,8 +82,8 @@ func (m *Model) Close() error {
 	return err
 }
 
-func (m *Model) Compute(sentence string) ([]float32, error) {
-	results, err := m.ComputeBatch([]string{sentence})
+func (m *Model) Compute(sentence string, addSpecialTokens bool) ([]float32, error) {
+	results, err := m.ComputeBatch([]string{sentence}, addSpecialTokens)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (m *Model) ComputeFromEncoding(encoding tokenizer.Encoding) ([]float32, err
 	return res[0], nil
 }
 
-func (m *Model) ComputeBatch(sentences []string) ([][]float32, error) {
+func (m *Model) ComputeBatch(sentences []string, addSpecialTokens bool) ([][]float32, error) {
 	if len(sentences) == 0 {
 		return nil, nil
 	}
@@ -114,7 +114,7 @@ func (m *Model) ComputeBatch(sentences []string) ([][]float32, error) {
 	if len(inputBatch) == 0 {
 		return nil, nil
 	}
-	encodings, err := m.tk.EncodeBatch(inputBatch, true)
+	encodings, err := m.tk.EncodeBatch(inputBatch, addSpecialTokens)
 	if err != nil {
 		return nil, fmt.Errorf("failed to tokenize sentence: %w", err)
 	}
@@ -122,7 +122,6 @@ func (m *Model) ComputeBatch(sentences []string) ([][]float32, error) {
 }
 
 func (m *Model) ComputeBatchFromEncodings(encodings []tokenizer.Encoding) ([][]float32, error) {
-
 	batchSize := len(encodings)
 	seqLength := len(encodings[0].Ids)
 	hiddenSize := 384

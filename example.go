@@ -25,8 +25,8 @@ func main() {
 	}
 
 	// Compute embeddings
-	baseEmbedding, _ := model.Compute(baseSentence)
-	candidateEmbeddings, _ := model.ComputeBatch(candidates)
+	baseEmbedding, _ := model.Compute(baseSentence, false)
+	candidateEmbeddings, _ := model.ComputeBatch(candidates, false)
 
 	displaySimilarities(baseSentence, candidates, baseEmbedding, candidateEmbeddings)
 }
