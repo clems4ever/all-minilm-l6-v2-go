@@ -12,7 +12,7 @@ func TestSingleSentenceEmbedding(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create model: %v", err)
 	}
-	defer model.Close()
+	defer closeAndDestroy(model)
 
 	sentence := "Hello, world! This is a test sentence."
 	embedding, err := model.Compute(sentence, false)
@@ -54,7 +54,7 @@ func TestBatchEmbedding(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create model: %v", err)
 	}
-	defer model.Close()
+	defer closeAndDestroy(model)
 
 	sentences := []string{
 		"Hello, world! This is a test sentence.",
@@ -117,7 +117,7 @@ func TestConsistentEmbeddingForSameSentence(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create model: %v", err)
 	}
-	defer model.Close()
+	defer closeAndDestroy(model)
 
 	// Test with same sentence appearing twice in batch, plus a different sentence
 	sentences := []string{
@@ -172,7 +172,7 @@ func TestSingleVsBatchConsistency(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create model: %v", err)
 	}
-	defer model.Close()
+	defer closeAndDestroy(model)
 
 	sentence := "Testing consistency between single and batch computation."
 
@@ -203,7 +203,7 @@ func TestEmptyBatch(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create model: %v", err)
 	}
-	defer model.Close()
+	defer closeAndDestroy(model)
 
 	// Test empty batch
 	embeddings, err := model.ComputeBatch([]string{}, false)
@@ -229,4 +229,10 @@ func vectorsEqual(a, b []float32) bool {
 		}
 	}
 	return true
+}
+
+// Helper function to close the model and destroy its env
+func closeAndDestroy(m *all_minilm_l6_v2.Model) {
+	m.Close()
+	all_minilm_l6_v2.DestroyOrtEnv()
 }

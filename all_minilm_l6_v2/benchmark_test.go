@@ -14,6 +14,7 @@ func newModel(t *testing.B) *all_minilm_l6_v2.Model {
 	}
 	t.Cleanup(func() {
 		benchModel.Close()
+		all_minilm_l6_v2.DestroyOrtEnv()
 	})
 	return benchModel
 }

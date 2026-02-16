@@ -102,6 +102,11 @@ func (m *Model) Close() {
 	}
 }
 
+func DestroyOrtEnv() error {
+	err := ort.DestroyEnvironment()
+	return err
+}
+
 func (m *Model) Compute(sentence string, addSpecialTokens bool) ([]float32, error) {
 	results, err := m.ComputeBatch([]string{sentence}, addSpecialTokens)
 	if err != nil {
